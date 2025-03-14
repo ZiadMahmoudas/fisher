@@ -157,18 +157,16 @@ header .navbar .collect .swap-nav .navbar-collapse .navbar-nav li .nav-link:hove
  header .navbar .collect .swap-nav .navbar-toggler {
     border: none;
     box-shadow: none;
-    background-color: #171717;
+   
     border-radius: 50%;
     padding-block: 10px;
     padding-inline: 12px;
 }
 
- header .navbar .collect .swap-nav .navbar-toggler:hover {
-    background-color: rgba(21, 227, 21, 0.621);
-}
 
  header .navbar .collect .swap-nav .navbar-toggler i {
     font-size: 32px;
+    color: #0056b3;
 }
 .nav-icons{
     display: flex;
@@ -177,16 +175,29 @@ header .navbar .collect .swap-nav .navbar-collapse .navbar-nav li .nav-link:hove
 }
 .nav-icons a {
     cursor: pointer;
+    
 }
-.nav-icons a i{
+.nav-icons {
     color: #0056b3;
+    font-size: 24px;
 }
 .icon-cart{
     position: relative;
 }
-.icon-cart i{
-    background-color: #171717;
+.edit{
+    position: absolute;
+    background-color: red;
     border-radius: 50%;
+    color: #fff;
+    top: 75%;
+    right: 57%;
+    width: 60%;
+    text-align: center;
+    font-size: 16px;
+  
+}
+.icon-cart i{
+
     padding-block: 5px;
     padding-inline: 8px;
     cursor: pointer;
@@ -276,7 +287,6 @@ header .navbar .collect .swap-nav .navbar-collapse .navbar-nav li .nav-link:hove
  font-weight: 500;  
 }
  header .navbar .nav-icons a {
-    background-color: #171717;
     border-radius: 50%;
     padding-block: 5px;
     padding-inline: 8px;
@@ -333,10 +343,7 @@ header .navbar .collect .swap-nav .navbar-collapse .navbar-nav li .nav-link:hove
     width: 25%;
     height: 130px;
 }
-/* .parts .dish img{
-    box-shadow: 4px 4px 5px #eee;
-    border-radius: 50%;
-}  */
+
 .parts .dish p {
     font-family: Black;
     font-size: 14px;
@@ -345,7 +352,7 @@ header .navbar .collect .swap-nav .navbar-collapse .navbar-nav li .nav-link:hove
     display: flex;
     padding-top: 25px;
     align-items: center;
-    gap: 6px;
+    gap: 2px;
     justify-content: center;
 }
 .links a{
@@ -511,7 +518,6 @@ header .navbar .collect .swap-nav .navbar-collapse .navbar-nav li .nav-link:hove
     padding: 15px 15px;
   }
   footer{
-
     position: fixed;
     width: 100%;
     bottom: 0;
@@ -534,7 +540,7 @@ footer .shop{
 footer .shop #total{
     display: flex;
     align-items: center;
-    gap: 25px;
+   gap: 5px;
 }
 footer .shop #total span{
     color: var(--white);
@@ -549,7 +555,7 @@ footer .shop #total h1{
 }
 footer .shop .go{
     display: flex;
-    gap:10px;
+    
     align-items: center;
 }
 footer .shop .go h5{
@@ -592,8 +598,8 @@ footer .shop .go i:hover{
     cursor: pointer;
     font-size: 25px;
     position: absolute;
-    right: 95%;
-    top: 10%;
+    right: 92%;
+    top: 0%;
     z-index: 55555;
 }
 .popcontainer.appear{
@@ -624,7 +630,7 @@ form input{
     border: none;
     outline: 0;
     border-radius: 20px;
-    width: 100%;
+    width: 88%;
     height: 64px;
     padding: 29px 20px 11px;
     font-size: 20px;
@@ -667,6 +673,7 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .flat{
+    width: 57%;
     position: relative;
 }
 .flat label{
@@ -685,7 +692,7 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
     .phone label{
         top: 80%;
-        left: 5%;
+        left: 30%;
         transform: translateY(-100%);
     }
 .phone input:focus ~ label,.phone input:valid ~ label{
@@ -693,11 +700,13 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     font-size: 1rem;
     transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
-
+.phone input{
+   width:  77%;
+}
 .textArea #driveNote{
     border: none;
     outline: 0;
-    width: 100%;
+    width: 90%;
     height: 100%;
     padding: 16px;
     font-size: 16px;
@@ -707,6 +716,9 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     margin-top: 5px;
     border-radius: 0 0 20px 20px;
     background: #f5f5f5;
+}
+.pay h1{
+    font-size: 25px;
 }
 .payment{
     display: flex;
@@ -738,6 +750,11 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 .payment .cardit i{
     font-size: 30px;
 }
+.validName,.vaildAddress
+,.vaildFlat,.vaildPhone,
+.vaildArea{
+    display: none;
+}
 .basket{
     display: flex;
     flex-direction: column;
@@ -745,7 +762,7 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .basket .pro{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding-inline: 10px;
 }
 .basket .pro p{
@@ -755,7 +772,7 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .basket .value{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding-inline: 10px;
 }
 .order{
@@ -776,6 +793,9 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
     cursor: pointer;
     width: 24px;
     height: 24px;
+}
+.order p{
+    width: 62%;
 }
 .order .payFull2{
     display: flex;
@@ -811,7 +831,7 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .pay-container .follow:hover{
     background-color: #d90217;
-    ;
+    
 }
 .pay-container .follow p{
     margin-bottom: 0;
@@ -940,8 +960,49 @@ transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
   .sec2 .swiper-button-next:hover {
      color: rgba(235, 6, 121, 0.89);
    }
+   footer .shop #total{
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+footer .shop .go{
+display: flex;
+gap:10px;
+align-items: center;
+}
+.popcontainer i:nth-child(1) {
+    cursor: pointer;
+    font-size: 25px;
+    position: absolute;
+    right: 95%;
+    top: 5%;
+    z-index: 55555;
+}
+form input{
 
-
+    width: 100%;
+  
+}
+.textArea #driveNote{
+    width: 100%;
+}
+.phone input{
+    width:  100%;
+ }
+ .phone label{
+    top: 80%;
+    left: 10%;
+    transform: translateY(-100%);
+}
+.flat{
+    width: 100%;
+}
+.order p{
+    width: 100%;
+}
+.basket .value,.basket .pro{
+    justify-content: space-between;
+}
 }
 @media (min-width:768px){
   header .navbar .collect .swap-nav {

@@ -108,7 +108,8 @@ addToCartButtons = document.querySelectorAll(".text button"),
 cartTotal = document.querySelector(".cart-total"), 
 sidebar = document.querySelector(".cartTap"), 
 listCart = document.querySelector(".listCart"),
-shop = document.querySelector("#go #total h1");
+shop = document.querySelector("#go #total h1"),
+edit = document.querySelector(".icon-cart .edit")
 // down shop
 let basketTotal = document.querySelector(".basket .pro h3"); 
 let Name = document.querySelectorAll(".text .card-text")
@@ -117,6 +118,7 @@ let paycontainer = document.querySelector(".pay-container .pay h1:last-child")
 let priceProduct = document.querySelector(".pay-container span");
 let totalAmount = 0;
 let cartItems = [];
+let payComplete = document.querySelector(".follow p")
 
 addToCartButtons.forEach((el, index) => {
     el.addEventListener("click", () => {
@@ -133,23 +135,24 @@ addToCartButtons.forEach((el, index) => {
         }
         totalAmount += item.price;
         updateCart();
+            payComplete.innerHTML = "متابعة الدفع"
     });
 });
 
 
-function updateCart(updateSidebar = true){
-    updateCartTotal();
+function updateCart(){
+    updateCartCount();
     showTotalPrice()
-    if(updateSidebar)
     updateCartItemList();
 }
 
 function showTotalPrice(){
-    cartTotal.textContent = `${totalAmount.toFixed(3)}`;
+    cartTotal.textContent = `${totalAmount.toFixed(3)}د.ك`;
     paycontainer.textContent = `${totalAmount.toFixed(3)} د.ك`;
     priceProduct.textContent = `(${totalAmount.toFixed(3)} د.ك)`;
     if (shop) shop.textContent = `${totalAmount.toFixed(3)} د.ك`;
     if (basketTotal) basketTotal.textContent = `${totalAmount.toFixed(3)} د.ك`;
+    
 }
 function updateCartItemList(){
     listCart.innerHTML = ''; 
@@ -169,7 +172,6 @@ function updateCartItemList(){
         listCart.append(cartItem);
     });
     activateIncreaseDecrease();
-   
 }
 function activateIncreaseDecrease(){
     increase();
@@ -200,15 +202,19 @@ function increase(){
         });
     });
  }
-function updateCartTotal(){
+function updateCartCount(){
     let totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
     let cartCounter = document.querySelector(".basket .pro span"); 
-    let cartCounter1 = document.querySelector("#go #total span"); 
+    let cartCounter1 = document.querySelector("#go #total span");
+    let counterEdit = edit; 
     if (cartCounter) {
         cartCounter.textContent = `(${totalItems})`;
     }
     if (cartCounter1) {
         cartCounter1.textContent = totalItems;
+    }
+    if (counterEdit) {
+        counterEdit.textContent = totalItems;
     }
 }
 
@@ -273,75 +279,24 @@ const product = [
      quantity: 1,
 }
 ]
-
-let total = 0
-let productContainer = document.querySelector(".sec3 .container .row") 
-let show = product=>{
-    let result="";
-    for(let i=0;i<product.length;i++){
-        let cartItem = cartItems.find(item => item.id === product[i].id);
-        let quantity = cartItem ? cartItem.quantity : 0;
-     result += `
- <div class="col-sm-6 col-12">
-            <div class="card width-card mb-3" style="max-width: 500px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="${product[i].image}" class="img-fluid All-pic" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">${product[i].title}</h5>
-                            <p class="card-text">10 كيلو روبيان كويتي جامبو طازج.</p>
-                            <div class="add d-flex align-items-center justify-content-between">
-                            ${quantity > 0 ? `<p class="card-text"><small class="text-body-secondary">${(parseFloat(product[i].price) * quantity).toFixed(3)}د.ك
-                                </small></p>`:`<p class="card-text"><small class="text-body-secondary">${(product[i].price)}</small></p>` }      
-                            <div id="cart-controls-${product[i].id}">
-                                    ${quantity > 0 ? `
-                                    <div class="quantity-controls">
-                                        <button class="  btn-danger decreasing" data-id="${product[i].id}">-</button>
-                                        <span>${quantity}</span>
-                                        <button class="  btn-success increasing" data-id="${product[i].id}">+</button>
-                                    </div>` : `
-                                    <button type="button" class="add-to-cart text-black btn btn-primary" data-id="${product[i].id}">إضافة</button>`}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-    }
-    productContainer.innerHTML = result;
-    setupAddToCartButtons();
-    setupQuantityButtons();
-}
-function updateCartCount() {
-    let totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    let cartCounter = document.querySelector(".basket .pro span"); 
-    let cartCounter1 = document.querySelector("#go #total span");
-
-    if (cartCounter) {
-        cartCounter.textContent = `(${totalItems})`;
-    }
-    if (cartCounter1) {
-        cartCounter1.textContent = totalItems;
-    }
-}
-
 const addToCart1 = (productId) => {
     let selectedProduct = product.find(item => item.id === productId);
     if (!selectedProduct) return;
-
     let existingItem = cartItems.find(item => item.id === productId);
-
     if (existingItem) {
         existingItem.quantity++;
     } else {
-        cartItems.push({ ...selectedProduct, quantity: 1 });
+        cartItems.push({ 
+            id: selectedProduct.id, 
+            name: selectedProduct.title, 
+            price: parseFloat(selectedProduct.price), 
+            quantity: 1 
+        });
     }
-    totalAmount = cartItems.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
-    show(product);
-    updateCart(false)
+    totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    updateCart(); 
+    payComplete.innerHTML = "متابعة الدفع"
 };
 const setupQuantityButtons = () => {
     document.querySelectorAll(".increasing").forEach(button => {
@@ -358,9 +313,6 @@ const setupQuantityButtons = () => {
         });
     });
 };
-
-
-
 const decreaseQuantity = (productId) => {
     let itemIndex = cartItems.findIndex(item => item.id === productId);
     if (itemIndex !== -1) {
@@ -372,7 +324,7 @@ const decreaseQuantity = (productId) => {
     }
     totalAmount = cartItems.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
     show(product); 
-    updateCart(false)
+    updateCart()
 };
 
 const setupAddToCartButtons = () => {
@@ -383,6 +335,38 @@ const setupAddToCartButtons = () => {
         });
     });
 };
+
+let productContainer = document.querySelector(".sec3 .container .row") 
+let show = product=>{
+    let result="";
+    for(let i=0;i<product.length;i++){
+     result += `
+ <div class="col-sm-6 col-12">
+            <div class="card width-card mb-3" style="max-width: 500px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="${product[i].image}" class="img-fluid All-pic" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">${product[i].title}</h5>
+                            <p class="card-text">10 كيلو روبيان كويتي جامبو طازج.</p>
+                            <div class="add d-flex align-items-center justify-content-between">
+                            <div id="cart-controls-${product[i].id}">
+                                    <button type="button" class="add-to-cart text-black btn btn-primary" data-id="${product[i].id}">إضافة</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+    productContainer.innerHTML = result;
+    setupAddToCartButtons();
+    setupQuantityButtons();
+}
+
 
 
 show(product);
@@ -416,3 +400,134 @@ let  search = document.getElementById("search"),
  })
 
  /* data For Users */
+ let userName = document.getElementById("userName");
+ let Address = document.getElementById("Address");
+ let Flat = document.getElementById("flat");
+ let Phone = document.getElementById("phone");
+ let driveNote = document.getElementById("driveNote");
+let regxUserName = /([أا-ي لآآإلإ]{2,}|[a-z]{2,})/gi
+let regxAddress = /([أا-ي لآآإلإ]{1,}|[0-9])$/gi
+let regxFlat = /([أا-ي لآآإلإ]{2,}|[0-9])$/gi
+let regxPhone = /[0-9]{12}/gi
+let regxTextArea = /([أا-يؤلآآإلإ]{2,200}|[0-9]{1,200})$/gi
+let validName = document.querySelector(".userName .validName"),
+vaildAddress = document.querySelector(".address .vaildAddress"),
+vaildFlat=document.querySelector(".flat .vaildFlat"),
+vaildPhone =document.querySelector(".phone .vaildPhone") ,
+vaildArea = document.querySelector(".textArea .vaildArea")
+let arr = []
+function addToTableDashBoard(){
+  if(showVaildation() && wayPay()){
+    let user = {
+        username:userName.value.trim(),
+        address:Address.value.trim(),
+        flat:Flat.value.trim(),
+        phone:Phone.value.trim(),
+        drive:driveNote.value.trim(),
+     }
+     arr.push(user)
+     console.log(arr);
+     
+    }
+    clearInputsField()
+}
+function showVaildation(){
+    let flag = true;
+    if(regxUserName.test(userName.value)){
+        validName.style.cssText = "display:none"
+    }else{
+       validName.style.cssText = "display:block"
+        setTimeout(() => {
+             validName.style.cssText = "display:none"
+          },3000)
+           flag = false
+    }
+    if(regxAddress.test(Address.value)){
+      vaildAddress.style.cssText = "display:none"
+    }else{
+        vaildAddress.style.cssText = "display:block"
+        setTimeout(() => {
+        vaildAddress.style.cssText = "display:none"
+          },3000)
+           flag = false
+    }
+    if(regxFlat.test(Flat.value)){
+   vaildFlat.style.cssText = "display:none"
+    }
+    else{
+        vaildFlat.style.cssText = "display:block"
+          setTimeout(() => {
+           vaildFlat.style.cssText = "display:none"
+          },3000)
+           flag = false
+    }
+    if(regxPhone.test(Phone.value)){
+        vaildPhone.style.cssText = "display:none" 
+    }
+    else{
+        vaildPhone.style.cssText = "display:block"
+          setTimeout(() => {
+           vaildPhone.style.cssText = "display:none"
+          },3000)
+           flag = false
+    }
+    if(regxTextArea.test(driveNote.value)){
+        vaildArea.style.cssText = "display:none"
+    }else{
+        vaildArea.style.cssText = "display:block"
+        setTimeout(() => {
+        vaildArea.style.cssText = "display:none"
+        },3000)
+           flag = false
+    }
+    return flag
+}
+function clearInputsField(){
+    userName.value ="";
+    Address.value ="";
+     Flat.value ="";
+    Phone.value ="";
+    driveNote.value ="";
+ }
+// المفروض اعرض من خلالها الداتا بس المفروض مكانها مش هنا علشان باك هيستقبل مني الريسبونس
+// function displayData(){
+
+// }
+ /* input selector */
+ const payFull = document.getElementById("payFull");
+ let drive = document.querySelector(".payFull2 #payFull2");
+ function updatePrice() {
+    if (payFull.checked) {
+        totalAmount.textContent = totalAmount; 
+        priceProduct.textContent = `(${totalAmount.toFixed(3)}د.ك)`;
+        shop.textContent =`${totalAmount.toFixed(3)}د.ك`;
+        paycontainer.textContent = `${totalAmount.toFixed(3)}د.ك`;
+    } else if (drive.checked) {
+        totalAmount.textContent = "0.5 د.ك";     
+        priceProduct.textContent = "(0.5 د.ك)";
+        shop.textContent = "0.5 د.ك";
+        paycontainer.textContent ="0.5 د.ك";
+    }
+}
+
+payFull.addEventListener("change", updatePrice);
+drive.addEventListener("change", updatePrice);
+let complete = document.querySelector(".follow")
+complete.addEventListener("click",addToTableDashBoard)
+function wayPay(){
+    let truthValue = true;
+    if(totalAmount){
+    setTimeout(()=>{
+    window.open("https://ziadmahmoudas.github.io/payment/","_blank") 
+    },2000)
+    truthValue = true
+}
+    else if(!totalAmount){
+        setTimeout(()=>{
+      payComplete.innerHTML = "سلة فارغة"
+      priceProduct.innerHTML = ""
+    },2000)
+    truthValue = false;
+}
+return truthValue;
+}
